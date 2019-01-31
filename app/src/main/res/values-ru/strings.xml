@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ФСР Проекты</string>
+    <string name="sign_in_failed">Не удалось войти в аккаунт</string>
+    <string name="signed_in_successfully">Выполнен вход в аккаунт</string>
+
+</resources>
