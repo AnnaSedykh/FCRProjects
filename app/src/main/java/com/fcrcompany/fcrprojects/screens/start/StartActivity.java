@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.fcrcompany.fcrprojects.App;
 import com.fcrcompany.fcrprojects.R;
+import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.fcrcompany.fcrprojects.screens.access.NoAccessActivity;
 import com.fcrcompany.fcrprojects.screens.main.MainActivity;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -36,7 +37,7 @@ public class StartActivity extends AppCompatActivity {
     ImageView bottomCorner;
 
     private GoogleAccountCredential credential;
-    private App app;
+    private Prefs prefs;
     private StartViewModel viewModel;
 
     @Override
@@ -48,8 +49,8 @@ public class StartActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(StartViewModelImpl.class);
         initInputs();
 
-        app = (App) getApplication();
-        String token = app.getToken();
+        prefs = ((App) getApplication()).getPrefs();
+        String token = prefs.getToken();
 
         if (token == null) {
             signIn();
@@ -83,7 +84,7 @@ public class StartActivity extends AppCompatActivity {
                 token -> {
                     Log.i(TAG, "initInputs: token " + token);
                     if (token != null) {
-                        app.setToken(token);
+                        prefs.saveToken(token);
                         viewModel.checkAccess(token);
                     }
                 });

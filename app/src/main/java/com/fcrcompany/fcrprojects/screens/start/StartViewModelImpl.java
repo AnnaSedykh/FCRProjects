@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.fcrcompany.fcrprojects.App;
+import com.fcrcompany.fcrprojects.BuildConfig;
 import com.fcrcompany.fcrprojects.data.api.Api;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
 import com.google.android.gms.auth.GoogleAuthException;
@@ -49,17 +50,15 @@ public class StartViewModelImpl extends StartViewModel {
 
     @Override
     public void checkAccess(String token) {
-        String query = "'" + ProjectFile.CURRENT_FOLDER_ID + "' in parents or '" + ProjectFile.ARCHIVE_FOLDER_ID + "' in parents";
+        String query = "'" + BuildConfig.FCR_ACCOUNT + "' in owners";
         Disposable disposable = api.files("Bearer " + token, query)
                 .subscribeOn(Schedulers.io())
                 .subscribe(driveResponse -> {
                     List<ProjectFile> data = driveResponse.files;
-                    if (data != null) {
-                        if(!data.isEmpty()) {
-                            access.postValue(true);
-                        } else {
-                            access.postValue(false);
-                        }
+                    if (data == null || data.isEmpty()) {
+                        access.postValue(false);
+                    } else {
+                        access.postValue(true);
                     }
                 });
 
