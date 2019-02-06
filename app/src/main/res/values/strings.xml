@@ -3,4 +3,14 @@
 
     <string name="signed_in_successfully">Signed in successfully!</string>
     <string name="sign_in_failed">Sign in failed!</string>
+    <string name="change_account">Change account</string>
+    <string name="no_access">You have no access \nto project files.</string>
+    <string name="send_access_request">" Do you want to send \naccess request?"</string>
+    <string name="send">SEND</string>
+    <string name="request_permission">Access request</string>
+    <string name="email_template">%s requests %s</string>
+    <string name="email_text_read_access">access to view project files</string>
+    <string name="email_chooser">Request access via email…</string>
+    <string name="request_sent">Request has been sent \nand is pending approval</string>
+
 </resources>

@@ -4,5 +4,13 @@ public interface Prefs {
 
     String getToken();
 
-    void saveToken(String token);
+    void setToken(String token);
+
+    String getAccountName();
+
+    void setAccountName(String accountName);
+
+    boolean isAccessRequestSent();
+
+    void setAccessRequestSent(boolean isSent);
 }

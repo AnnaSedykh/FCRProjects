@@ -8,11 +8,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.fcrcompany.fcrprojects.App;
 import com.fcrcompany.fcrprojects.BuildConfig;
 import com.fcrcompany.fcrprojects.data.api.Api;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
+import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
@@ -31,12 +33,14 @@ public class StartViewModelImpl extends StartViewModel {
     private MutableLiveData<Boolean> access = new MutableLiveData<>();
 
     private Api api;
+    private Prefs prefs;
     private CompositeDisposable disposables = new CompositeDisposable();
 
 
     public StartViewModelImpl(@NonNull Application application) {
         super(application);
         api = ((App) application).getApi();
+        prefs = ((App) application).getPrefs();
     }
 
     public LiveData<String> token() {
@@ -53,6 +57,7 @@ public class StartViewModelImpl extends StartViewModel {
         String query = "'" + BuildConfig.FCR_ACCOUNT + "' in owners";
         Disposable disposable = api.files("Bearer " + token, query)
                 .subscribeOn(Schedulers.io())
+                .doOnError(throwable -> Log.e(TAG, "checkAccess: ", throwable))
                 .subscribe(driveResponse -> {
                     List<ProjectFile> data = driveResponse.files;
                     if (data == null || data.isEmpty()) {
@@ -99,6 +104,8 @@ public class StartViewModelImpl extends StartViewModel {
 
         @Override
         protected void onPostExecute(String authToken) {
+            prefs.setAccountName(credential.getSelectedAccountName());
+            prefs.setToken(authToken);
             token.setValue(authToken);
         }
     }

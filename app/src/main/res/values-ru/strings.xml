@@ -4,5 +4,14 @@
     <string name="app_name">ФСР Проекты</string>
     <string name="sign_in_failed">Не удалось войти в аккаунт</string>
     <string name="signed_in_successfully">Выполнен вход в аккаунт</string>
+    <string name="change_account">Выбрать аккаунт</string>
+    <string name="no_access">У Вас нет доступа \nк файлам проектов.</string>
+    <string name="send_access_request">Отправить запрос \nна получение доступа?</string>
+    <string name="send">ОТПРАВИТЬ</string>
+    <string name="request_permission">Запрос на доступ</string>
+    <string name="email_template">%s запрашивает %s</string>
+    <string name="email_text_read_access">разрешение на просмотр файлов проектов</string>
+    <string name="email_chooser">Запросить разрешение по почте…</string>
+    <string name="request_sent">Запрос отправлен \nи ожидает одобрения</string>
 
 </resources>
