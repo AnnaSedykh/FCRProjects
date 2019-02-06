@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.fcrcompany.fcrprojects.App;
 import com.fcrcompany.fcrprojects.R;
+import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.fcrcompany.fcrprojects.screens.access.NoAccessActivity;
 import com.fcrcompany.fcrprojects.screens.main.MainActivity;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -26,6 +28,12 @@ import butterknife.ButterKnife;
 
 public class StartActivity extends AppCompatActivity {
 
+    public static void startInNewTask(Context context) {
+        Intent starter = new Intent(context, StartActivity.class);
+        starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(starter);
+    }
+
     private static final String TAG = "StartActivity";
     private static final int SIGN_IN_CODE = 123;
 
@@ -36,7 +44,7 @@ public class StartActivity extends AppCompatActivity {
     ImageView bottomCorner;
 
     private GoogleAccountCredential credential;
-    private App app;
+    private Prefs prefs;
     private StartViewModel viewModel;
 
     @Override
@@ -48,8 +56,8 @@ public class StartActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(StartViewModelImpl.class);
         initInputs();
 
-        app = (App) getApplication();
-        String token = app.getToken();
+        prefs = ((App) getApplication()).getPrefs();
+        String token = prefs.getToken();
 
         if (token == null) {
             signIn();
@@ -83,7 +91,6 @@ public class StartActivity extends AppCompatActivity {
                 token -> {
                     Log.i(TAG, "initInputs: token " + token);
                     if (token != null) {
-                        app.setToken(token);
                         viewModel.checkAccess(token);
                     }
                 });
