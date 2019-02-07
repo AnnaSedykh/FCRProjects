@@ -9,6 +9,7 @@ public class PrefsImpl implements Prefs {
     private static final String KEY_AUTH_TOKEN = "auth_token";
     private static final String KEY_ACCOUNT_NAME = "email";
     private static final String KEY_ACCESS_REQUEST_SENT = "access request is sent";
+    private static final String KEY_ACCOUNT_CHOOSER_ON_TOP = "account chooser on top";
     private Context context;
 
     public PrefsImpl(Context context) {
@@ -43,6 +44,16 @@ public class PrefsImpl implements Prefs {
     @Override
     public void setAccessRequestSent(boolean isSent) {
         getPrefs().edit().putBoolean(KEY_ACCESS_REQUEST_SENT, isSent).apply();
+    }
+
+    @Override
+    public void setAccountChooserOnTop(boolean isOnTop) {
+        getPrefs().edit().putBoolean(KEY_ACCOUNT_CHOOSER_ON_TOP, isOnTop).apply();
+    }
+
+    @Override
+    public boolean isAccountChooserOnTop() {
+        return getPrefs().getBoolean(KEY_ACCOUNT_CHOOSER_ON_TOP, false);
     }
 
     private SharedPreferences getPrefs(){

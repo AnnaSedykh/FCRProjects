@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fcrcompany.fcrprojects.App;
+import com.fcrcompany.fcrprojects.BuildConfig;
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.fcrcompany.fcrprojects.screens.access.NoAccessActivity;
@@ -54,21 +55,26 @@ public class StartActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         viewModel = ViewModelProviders.of(this).get(StartViewModelImpl.class);
+        credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(DriveScopes.DRIVE));
         initInputs();
 
         prefs = ((App) getApplication()).getPrefs();
         String token = prefs.getToken();
 
-        if (token == null) {
-            signIn();
-        } else {
-            viewModel.checkAccess(token);
+        if (!prefs.isAccountChooserOnTop()) {
+            if (token == null) {
+                signIn();
+            } else if (BuildConfig.FCR_ACCOUNT.equals(prefs.getAccountName())) {
+                MainActivity.startInNewTask(this);
+            } else {
+                viewModel.checkAccess(token);
+            }
         }
     }
 
     private void signIn() {
-        credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(DriveScopes.DRIVE));
         startActivityForResult(credential.newChooseAccountIntent(), SIGN_IN_CODE);
+        prefs.setAccountChooserOnTop(true);
     }
 
     @Override
@@ -77,8 +83,10 @@ public class StartActivity extends AppCompatActivity {
         switch (requestCode) {
             case SIGN_IN_CODE:
                 if (resultCode == RESULT_OK) {
+                    prefs.setAccountChooserOnTop(false);
                     viewModel.receiveToken(data, credential);
                 } else {
+                    prefs.setAccountChooserOnTop(false);
                     Toast.makeText(this, getString(R.string.sign_in_failed), Toast.LENGTH_SHORT).show();
                     finish();
                 }
