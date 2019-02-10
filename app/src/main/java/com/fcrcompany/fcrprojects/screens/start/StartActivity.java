@@ -1,20 +1,19 @@
 package com.fcrcompany.fcrprojects.screens.start;
 
+import android.accounts.AccountManager;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.fcrcompany.fcrprojects.App;
-import com.fcrcompany.fcrprojects.BuildConfig;
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.fcrcompany.fcrprojects.screens.access.NoAccessActivity;
@@ -35,7 +34,6 @@ public class StartActivity extends AppCompatActivity {
         context.startActivity(starter);
     }
 
-    private static final String TAG = "StartActivity";
     private static final int SIGN_IN_CODE = 123;
 
     @BindView(R.id.start_top_corner)
@@ -44,7 +42,6 @@ public class StartActivity extends AppCompatActivity {
     @BindView(R.id.start_bottom_corner)
     ImageView bottomCorner;
 
-    private GoogleAccountCredential credential;
     private Prefs prefs;
     private StartViewModel viewModel;
 
@@ -55,26 +52,21 @@ public class StartActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         viewModel = ViewModelProviders.of(this).get(StartViewModelImpl.class);
-        credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(DriveScopes.DRIVE));
         initInputs();
 
         prefs = ((App) getApplication()).getPrefs();
         String token = prefs.getToken();
 
-        if (!prefs.isAccountChooserOnTop()) {
-            if (token == null) {
-                signIn();
-            } else if (BuildConfig.FCR_ACCOUNT.equals(prefs.getAccountName())) {
-                MainActivity.startInNewTask(this);
-            } else {
-                viewModel.checkAccess(token);
-            }
+        if (token == null) {
+            signIn();
+        } else {
+            viewModel.checkAccess(token);
         }
     }
 
     private void signIn() {
+        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(DriveScopes.DRIVE));
         startActivityForResult(credential.newChooseAccountIntent(), SIGN_IN_CODE);
-        prefs.setAccountChooserOnTop(true);
     }
 
     @Override
@@ -83,29 +75,38 @@ public class StartActivity extends AppCompatActivity {
         switch (requestCode) {
             case SIGN_IN_CODE:
                 if (resultCode == RESULT_OK) {
-                    prefs.setAccountChooserOnTop(false);
-                    viewModel.receiveToken(data, credential);
+                    if (data != null && data.getExtras() != null) {
+                        String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
+                        if (accountName != null) {
+                            prefs.setAccountName(accountName);
+                            viewModel.receiveToken(accountName);
+                        }
+                    }
                 } else {
-                    prefs.setAccountChooserOnTop(false);
-                    Toast.makeText(this, getString(R.string.sign_in_failed), Toast.LENGTH_SHORT).show();
-                    finish();
+                    showQuitDialog();
                 }
         }
+    }
+
+    private void showQuitDialog() {
+        QuitDialog quitDialog = new QuitDialog();
+        quitDialog.setListener(new QuitDialogListener());
+        quitDialog.show(getSupportFragmentManager(), QuitDialog.QUIT_DIALOG_TAG);
     }
 
     private void initInputs() {
 
         viewModel.token().observe(this,
                 token -> {
-                    Log.i(TAG, "initInputs: token " + token);
-                    if (token != null) {
+                    if (token == null) {
+                        signIn();
+                    } else {
                         viewModel.checkAccess(token);
                     }
                 });
 
         viewModel.access().observe(this,
                 haveAccess -> {
-                    Log.i(TAG, "initInputs: haveAccess " + haveAccess);
                     if (haveAccess != null && haveAccess) {
                         MainActivity.startInNewTask(this);
                     } else {
@@ -113,7 +114,6 @@ public class StartActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     @Override
     protected void onStart() {
@@ -138,5 +138,20 @@ public class StartActivity extends AppCompatActivity {
         AnimatorSet set = new AnimatorSet();
         set.play(innerAnimator).with(outerAnimator);
         set.start();
+    }
+
+
+    private class QuitDialogListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    setResult(RESULT_CANCELED, getIntent());
+                    finish();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    signIn();
+            }
+        }
     }
 }

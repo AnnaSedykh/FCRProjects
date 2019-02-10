@@ -12,5 +12,8 @@
     <string name="email_text_read_access">access to view project files</string>
     <string name="email_chooser">Request access via email…</string>
     <string name="request_sent">Request has been sent \nand is pending approval</string>
+    <string name="quit_dialog_msg">Quit the application?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

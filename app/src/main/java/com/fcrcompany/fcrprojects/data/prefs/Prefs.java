@@ -14,7 +14,4 @@ public interface Prefs {
 
     void setAccessRequestSent(boolean isSent);
 
-    void setAccountChooserOnTop(boolean isOnTop);
-
-    boolean isAccountChooserOnTop();
 }
