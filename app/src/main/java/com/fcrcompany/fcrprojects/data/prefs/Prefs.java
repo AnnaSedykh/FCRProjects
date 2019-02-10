@@ -13,4 +13,5 @@ public interface Prefs {
     boolean isAccessRequestSent();
 
     void setAccessRequestSent(boolean isSent);
+
 }

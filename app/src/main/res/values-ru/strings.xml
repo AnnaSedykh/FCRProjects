@@ -13,5 +13,8 @@
     <string name="email_text_read_access">разрешение на просмотр файлов проектов</string>
     <string name="email_chooser">Запросить разрешение по почте…</string>
     <string name="request_sent">Запрос отправлен \nи ожидает одобрения</string>
+    <string name="quit_dialog_msg">Выйти из приложения?</string>
+    <string name="ok">Да</string>
+    <string name="cancel">Отмена</string>
 
 </resources>
