@@ -5,11 +5,17 @@
     <color name="primary_light">#FFFFFF</color>
     <color name="accent">#388E3C</color>
 
-    <color name="primary_text_color">#3A3535</color>
-    <color name="secondary_text_color">#424241</color>
+    <color name="primary_text_color">#2E2C2C</color>
+    <color name="secondary_text_color">#494545</color>
     <color name="button_text_color">#FFFFFF</color>
 
     <color name="gradient_shadow_start">#02323348</color>
     <color name="gradient_shadow_end">#3366688F</color>
+
+    <color name="indicator">#ef5350</color>
+    <color name="inactive">#ACA7A7</color>
+    <color name="active">#2E2C2C</color>
+
+    <color name="progress_bar">#ef5350</color>
 
 </resources>

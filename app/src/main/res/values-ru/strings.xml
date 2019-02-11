@@ -17,4 +17,11 @@
     <string name="ok">Да</string>
     <string name="cancel">Отмена</string>
 
+    <string name="tab_current">В работе</string>
+    <string name="tab_archive">Архив</string>
+
+    <string-array name="tab_titles">
+        <item>@string/tab_current</item>
+        <item>@string/tab_archive</item>
+    </string-array>
 </resources>

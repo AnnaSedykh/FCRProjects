@@ -1,0 +1,50 @@
+package com.fcrcompany.fcrprojects.screens.main;
+
+import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
+import com.fcrcompany.fcrprojects.R;
+import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
+import com.fcrcompany.fcrprojects.screens.main.projects.ProjectsFragment;
+
+/**
+ * {@link MainPagerAdapter} creates fragments for current and archive project tabs.
+ */
+public class MainPagerAdapter extends FragmentPagerAdapter {
+
+    public static final int PAGE_CURRENT = 0;
+    public static final int PAGE_ARCHIVE = 1;
+
+    private String[] titles;
+
+    public MainPagerAdapter(FragmentManager fm, Context context) {
+        super(fm);
+
+        titles = context.getResources().getStringArray(R.array.tab_titles);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+
+        switch (position) {
+            case PAGE_CURRENT:
+                return ProjectsFragment.createProjectFragment(ProjectFile.TYPE_CURRENT);
+            case PAGE_ARCHIVE:
+                return ProjectsFragment.createProjectFragment(ProjectFile.TYPE_ARCHIVE);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return titles.length;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+       return titles[position];
+    }
+}
