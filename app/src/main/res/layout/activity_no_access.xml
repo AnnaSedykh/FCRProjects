@@ -6,6 +6,7 @@
     tools:context=".screens.access.NoAccessActivity">
 
     <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar_shadow" />
 
     <TextView
         android:id="@+id/access"

@@ -1,4 +1,4 @@
-package com.fcrcompany.fcrprojects.screens.main.projects;
+package com.fcrcompany.fcrprojects.screens.main.projects.files;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
-import com.fcrcompany.fcrprojects.screens.main.projects.files.FilesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +18,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
+public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> {
 
     private List<ProjectFile> data = new ArrayList<>();
 
     @NonNull
     @Override
-    public ProjectsAdapter.ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FilesAdapter.FilesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_file, parent, false);
-        return new ProjectViewHolder(view);
+        return new FilesViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilesAdapter.FilesViewHolder holder, int position) {
         ProjectFile project = data.get(position);
         holder.bind(project);
     }
@@ -42,13 +41,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
     }
 
     public void setData(List<ProjectFile> data) {
-        if(data != null) {
+        if (data != null) {
             this.data = data;
             notifyDataSetChanged();
         }
     }
 
-    static class ProjectViewHolder extends RecyclerView.ViewHolder {
+    static class FilesViewHolder extends RecyclerView.ViewHolder {
+
         private static final String OPEN_URL = "https://drive.google.com/open?id=";
         private static final String MIME_TYPE_FOLDER = "application/vnd.google-apps.folder";
         private static final String MIME_TYPE_JPG = "image/jpeg";
@@ -64,7 +64,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         private Context context;
 
 
-        ProjectViewHolder(View itemView) {
+        FilesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
