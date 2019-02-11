@@ -15,6 +15,7 @@
     <string name="quit_dialog_msg">Quit the application?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="failed_to_open_project">Failed to open project folder</string>
 
     <string name="tab_current">Current</string>
     <string name="tab_archive">Archive</string>

@@ -6,13 +6,7 @@
     tools:context=".screens.access.NoAccessActivity">
 
     <include layout="@layout/toolbar" />
-
-    <View
-        android:id="@+id/toolbar_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_below="@id/toolbar"
-        android:background="@drawable/toolbar_dropshadow" />
+    <include layout="@layout/toolbar_shadow" />
 
     <TextView
         android:id="@+id/access"

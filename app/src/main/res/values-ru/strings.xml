@@ -16,6 +16,8 @@
     <string name="quit_dialog_msg">Выйти из приложения?</string>
     <string name="ok">Да</string>
     <string name="cancel">Отмена</string>
+    <string name="failed_to_open_project">Не удалось открыть проектную папку</string>
+
 
     <string name="tab_current">В работе</string>
     <string name="tab_archive">Архив</string>
