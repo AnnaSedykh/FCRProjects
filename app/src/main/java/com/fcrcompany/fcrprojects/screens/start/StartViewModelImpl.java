@@ -59,7 +59,7 @@ public class StartViewModelImpl extends StartViewModel {
             access.setValue(true);
         } else {
            String orderBy = "folder, name";
-            String query = "'" + BuildConfig.FCR_ACCOUNT + "' in owners";
+            String query = "'" + BuildConfig.FCR_ACCOUNT + "' in owners and mimeType != 'application/vnd.google-apps.folder'";
             Disposable disposable = api.files("Bearer " + token, orderBy, query)
                     .subscribeOn(Schedulers.io())
                     .subscribe(driveResponse -> {

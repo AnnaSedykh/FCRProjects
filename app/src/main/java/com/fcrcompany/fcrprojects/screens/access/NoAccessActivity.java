@@ -17,6 +17,10 @@ import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.fcrcompany.fcrprojects.screens.start.StartActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,6 +46,7 @@ public class NoAccessActivity extends AppCompatActivity implements Toolbar.OnMen
     @BindView(R.id.btn_send)
     Button btnSend;
 
+    private String lastViewedDate = new SimpleDateFormat("dd.MM.yyyy", Locale.US).format(new Date());
     private Prefs prefs;
 
     @Override
@@ -60,6 +65,16 @@ public class NoAccessActivity extends AppCompatActivity implements Toolbar.OnMen
         }
 
         btnSend.setOnClickListener(v -> sendAccessRequest());
+    }
+
+    @Override
+    protected void onRestart() {
+        //TODO check access job
+        super.onRestart();
+        String newDate = new SimpleDateFormat("dd.MM.yyyy", Locale.US).format(new Date());
+        if (!lastViewedDate.equals(newDate)) {
+            StartActivity.startInNewTask(this);
+        }
     }
 
     @Override

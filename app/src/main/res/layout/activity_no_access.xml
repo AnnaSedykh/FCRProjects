@@ -7,6 +7,13 @@
 
     <include layout="@layout/toolbar" />
 
+    <View
+        android:id="@+id/toolbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/toolbar_dropshadow" />
+
     <TextView
         android:id="@+id/access"
         android:layout_width="wrap_content"

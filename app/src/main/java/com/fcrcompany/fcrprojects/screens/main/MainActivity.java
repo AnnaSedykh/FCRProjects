@@ -14,6 +14,10 @@ import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.prefs.Prefs;
 import com.fcrcompany.fcrprojects.screens.start.StartActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
+    private String lastViewedDate = new SimpleDateFormat("dd.MM.yyyy", Locale.US).format(new Date());
     private Prefs prefs;
 
     @Override
@@ -51,6 +56,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    protected void onRestart() {
+        //TODO check access job
+        super.onRestart();
+        String newDate = new SimpleDateFormat("dd.MM.yyyy", Locale.US).format(new Date());
+        if (!lastViewedDate.equals(newDate)) {
+            StartActivity.startInNewTask(this);
+        }
     }
 
     @Override
