@@ -16,4 +16,12 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
+    <string name="tab_current">Current</string>
+    <string name="tab_archive">Archive</string>
+
+    <string-array name="tab_titles">
+        <item>@string/tab_current</item>
+        <item>@string/tab_archive</item>
+    </string-array>
+
 </resources>

@@ -10,5 +10,7 @@ import retrofit2.http.Query;
 public interface Api {
 
     @GET("files")
-    Observable<DriveResponse> files(@Header("Authorization") String token, @Query("q") String query);
+    Observable<DriveResponse> files(@Header("Authorization") String token,
+                                    @Query("orderBy") String orderBy,
+                                    @Query("q") String query);
 }

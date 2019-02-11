@@ -58,8 +58,9 @@ public class StartViewModelImpl extends StartViewModel {
        if (BuildConfig.FCR_ACCOUNT.equals(prefs.getAccountName())) {
             access.setValue(true);
         } else {
+           String orderBy = "folder, name";
             String query = "'" + BuildConfig.FCR_ACCOUNT + "' in owners";
-            Disposable disposable = api.files("Bearer " + token, query)
+            Disposable disposable = api.files("Bearer " + token, orderBy, query)
                     .subscribeOn(Schedulers.io())
                     .subscribe(driveResponse -> {
                         List<ProjectFile> data = driveResponse.files;
