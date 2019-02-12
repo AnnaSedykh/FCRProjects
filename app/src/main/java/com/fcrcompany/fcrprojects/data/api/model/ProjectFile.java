@@ -5,9 +5,11 @@ import android.os.Parcelable;
 
 public class ProjectFile implements Parcelable {
 
-    public static final String PROJECT = "project";
+    public static final String PROJECT_FILE = "project_file";
     public static final String CURRENT_FOLDER_ID = "1G8ozUR7jyP3DOiU-it2sa1_4j-EYqxUB";
     public static final String ARCHIVE_FOLDER_ID = "1g1xmm-jbrVxiQZJv6myo0CMhsqILiKom";
+    public static final String FIELDS_QUERY = "files(id, name, mimeType, webContentLink, webViewLink, viewedByMe)";
+    public static final int COLUMN_NUMBER = 3;
 
     public static final String PHOTO_RU = "фото";
     public static final String PHOTO_EN = "photo";
@@ -21,6 +23,12 @@ public class ProjectFile implements Parcelable {
     public String name;
 
     public String mimeType;
+
+    public String webContentLink;
+
+    public String webViewLink;
+
+    public boolean viewedByMe;
 
     protected ProjectFile(Parcel in) {
         id = in.readString();

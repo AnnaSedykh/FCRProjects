@@ -12,5 +12,6 @@ public interface Api {
     @GET("files")
     Observable<DriveResponse> files(@Header("Authorization") String token,
                                     @Query("orderBy") String orderBy,
+                                    @Query("fields") String fields,
                                     @Query("q") String query);
 }

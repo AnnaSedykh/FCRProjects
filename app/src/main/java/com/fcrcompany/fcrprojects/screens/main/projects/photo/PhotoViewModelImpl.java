@@ -1,4 +1,4 @@
-package com.fcrcompany.fcrprojects.screens.main.projects;
+package com.fcrcompany.fcrprojects.screens.main.projects.photo;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -16,58 +16,46 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ProjectsViewModelImpl extends ProjectsViewModel {
+class PhotoViewModelImpl extends PhotoViewModel {
 
-    private MutableLiveData<List<ProjectFile>> projectFiles = new MutableLiveData<>();
+    private MutableLiveData<List<ProjectFile>> photos = new MutableLiveData<>();
 
     private CompositeDisposable disposables = new CompositeDisposable();
     private Api api;
     private Prefs prefs;
 
-    public ProjectsViewModelImpl(@NonNull Application application) {
+    public PhotoViewModelImpl(@NonNull Application application) {
         super(application);
-
         App app = (App) application;
         api = app.getApi();
         prefs = app.getPrefs();
     }
 
     @Override
-    public LiveData<List<ProjectFile>> projectFiles() {
-        return projectFiles;
+    public LiveData<List<ProjectFile>> photos() {
+        return photos;
     }
 
     @Override
-    public void getProjectFiles(String type) {
+    public void getPhotos(String parentId) {
 
         String token = prefs.getToken();
-        String folderId = getFolderId(type);
-        String orderBy = "folder, name";
-        String query = "'" + folderId + "' in parents";
+        String orderBy = "folder, createdTime desc";
+        String query = "'" + parentId + "' in parents " +
+                "and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'image/jpeg')";
 
         Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY, query)
                 .subscribeOn(Schedulers.io())
                 .subscribe(driveResponse -> {
                     List<ProjectFile> data = driveResponse.files;
                     if (data == null || data.isEmpty()) {
-                        projectFiles.postValue(null);
+                        photos.postValue(null);
                     } else {
-                        projectFiles.postValue(data);
+                        photos.postValue(data);
                     }
                 });
 
         disposables.add(disposable);
     }
 
-    private String getFolderId(String type) {
-        String folderId = "";
-        switch (type){
-            case ProjectFile.TYPE_CURRENT:
-                folderId = ProjectFile.CURRENT_FOLDER_ID;
-                break;
-            case ProjectFile.TYPE_ARCHIVE:
-                folderId = ProjectFile.ARCHIVE_FOLDER_ID;
-        }
-        return folderId;
-    }
 }

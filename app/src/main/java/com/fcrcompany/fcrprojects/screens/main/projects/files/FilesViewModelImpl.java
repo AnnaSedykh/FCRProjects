@@ -44,7 +44,7 @@ public class FilesViewModelImpl extends FilesViewModel {
         String orderBy = "folder, name";
         String query = "'" + parentId + "' in parents";
 
-        Disposable disposable = api.files("Bearer " + token, orderBy, query)
+        Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY,query)
                 .subscribeOn(Schedulers.io())
                 .subscribe(driveResponse -> {
                     List<ProjectFile> data = driveResponse.files;
