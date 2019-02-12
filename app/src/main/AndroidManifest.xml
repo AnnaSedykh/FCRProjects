@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".screens.main.projects.files.FilesActivity"></activity>
+        <activity android:name=".screens.main.projects.photo.PhotoActivity"/>
+        <activity android:name=".screens.main.projects.files.FilesActivity" />
         <activity
             android:name=".screens.start.StartActivity"
             android:configChanges="orientation"

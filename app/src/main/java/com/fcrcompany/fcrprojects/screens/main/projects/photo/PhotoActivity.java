@@ -1,4 +1,4 @@
-package com.fcrcompany.fcrprojects.screens.main.projects.files;
+package com.fcrcompany.fcrprojects.screens.main.projects.photo;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,15 +15,14 @@ import android.widget.ProgressBar;
 
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
-import com.fcrcompany.fcrprojects.screens.main.projects.ProjectFilesAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FilesActivity extends AppCompatActivity {
+public class PhotoActivity extends AppCompatActivity {
 
     public static void start(Context context, ProjectFile project) {
-        Intent starter = new Intent(context, FilesActivity.class);
+        Intent starter = new Intent(context, PhotoActivity.class);
         starter.putExtra(ProjectFile.PROJECT_FILE, project);
         context.startActivity(starter);
     }
@@ -34,30 +33,30 @@ public class FilesActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.files_layout)
+    @BindView(R.id.photo_layout)
     View layout;
 
-    private ProjectFile project;
-    private ProjectFilesAdapter filesAdapter;
-    private FilesViewModel viewModel;
 
+    private ProjectFile photoFolder;
+    private PhotoAdapter photoAdapter;
+    private PhotoViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_files);
+        setContentView(R.layout.activity_photo);
         ButterKnife.bind(this);
 
-        project = getIntent().getParcelableExtra(ProjectFile.PROJECT_FILE);
-        if (project != null) {
+        photoFolder = getIntent().getParcelableExtra(ProjectFile.PROJECT_FILE);
+        if (photoFolder != null) {
 
             setupToolbar();
-            viewModel = ViewModelProviders.of(this).get(FilesViewModelImpl.class);
-            filesAdapter = new ProjectFilesAdapter();
-            recycler.setLayoutManager(new LinearLayoutManager(this));
-            recycler.setAdapter(filesAdapter);
+            viewModel = ViewModelProviders.of(this).get(PhotoViewModelImpl.class);
+            photoAdapter = new PhotoAdapter();
+            recycler.setLayoutManager(new GridLayoutManager(this, ProjectFile.COLUMN_NUMBER));
+            recycler.setAdapter(photoAdapter);
 
-            viewModel.getProjectFiles(project.id);
+            viewModel.getPhotos(photoFolder.id);
             initInputs();
 
         } else {
@@ -67,10 +66,12 @@ public class FilesActivity extends AppCompatActivity {
 
     private void initInputs() {
 
-        viewModel.projectFiles().observe(this,
-                projectFiles -> {
-                    filesAdapter.setData(projectFiles);
-                    progressBar.setVisibility(View.GONE);
+        viewModel.photos().observe(this,
+                photos -> {
+                    if (photos != null && !photos.isEmpty()) {
+                        photoAdapter.setData(photos);
+                        progressBar.setVisibility(View.GONE);
+                    }
                 }
         );
     }
@@ -90,9 +91,8 @@ public class FilesActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        toolbar.setTitle(project.name);
+        toolbar.setTitle(photoFolder.name);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> finish());
     }
-
 }

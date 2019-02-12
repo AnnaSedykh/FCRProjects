@@ -1,4 +1,4 @@
-package com.fcrcompany.fcrprojects.screens.main.projects.files;
+package com.fcrcompany.fcrprojects.screens.main.projects;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
+import com.fcrcompany.fcrprojects.screens.main.projects.files.FilesActivity;
+import com.fcrcompany.fcrprojects.screens.main.projects.photo.PhotoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +20,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> {
+public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapter.ProjectViewHolder> {
 
     private List<ProjectFile> data = new ArrayList<>();
 
     @NonNull
     @Override
-    public FilesAdapter.FilesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectFilesAdapter.ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_file, parent, false);
-        return new FilesViewHolder(view);
+        return new ProjectViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilesAdapter.FilesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         ProjectFile project = data.get(position);
         holder.bind(project);
     }
@@ -41,14 +43,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     }
 
     public void setData(List<ProjectFile> data) {
-        if (data != null) {
+        if(data != null) {
             this.data = data;
             notifyDataSetChanged();
         }
     }
 
-    static class FilesViewHolder extends RecyclerView.ViewHolder {
-
+    static class ProjectViewHolder extends RecyclerView.ViewHolder {
         private static final String OPEN_URL = "https://drive.google.com/open?id=";
         private static final String MIME_TYPE_FOLDER = "application/vnd.google-apps.folder";
         private static final String MIME_TYPE_JPG = "image/jpeg";
@@ -64,7 +65,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         private Context context;
 
 
-        FilesViewHolder(View itemView) {
+        ProjectViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -83,7 +84,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
                     String nameLowCase = projectFile.name.toLowerCase();
                     if (nameLowCase.contains(ProjectFile.PHOTO_RU) || nameLowCase.contains(ProjectFile.PHOTO_EN)) {
                         image.setImageResource(R.drawable.ic_photo);
-//                        startPhotoActivityOnClick(projectFile);
+                        itemView.setOnClickListener(v -> PhotoActivity.start(context, projectFile));
                     } else {
                         image.setImageResource(R.drawable.ic_mime_folder);
                         itemView.setOnClickListener(v -> FilesActivity.start(context, projectFile));
