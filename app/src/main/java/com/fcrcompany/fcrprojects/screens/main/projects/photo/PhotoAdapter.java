@@ -58,6 +58,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         ImageView photo;
         @BindView(R.id.folder_with_name)
         TextView textView;
+        @BindView(R.id.layout)
+        ViewGroup layout;
 
         private Context context;
         private int photoSize;
@@ -66,29 +68,32 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = itemView.getContext();
+            setViewSize();
+        }
+
+        private void setViewSize() {
             int width = context.getResources().getDisplayMetrics().widthPixels;
             photoSize = width / ProjectFile.COLUMN_NUMBER;
+            layout.setMinimumHeight(photoSize);
+            layout.setMinimumWidth(photoSize);
         }
 
         void bind(final ProjectFile photoFile) {
+
             switch (photoFile.mimeType) {
                 case MIME_TYPE_FOLDER:
-                    setupTextView(photoFile);
+                    textView.setText(photoFile.name);
+                    textView.setVisibility(View.VISIBLE);
                     itemView.setOnClickListener(v -> PhotoActivity.start(context, photoFile));
                     break;
 
                 case MIME_TYPE_JPG:
-                    setupPhotoView(photoFile);
+                    setPhoto(photoFile);
             }
         }
 
-        private void setupTextView(ProjectFile photoFile) {
-            textView.setVisibility(View.VISIBLE);
-            textView.setMinimumWidth(photoSize);
-            textView.setText(photoFile.name);
-        }
+        private void setPhoto(ProjectFile photoFile) {
 
-        private void setupPhotoView(ProjectFile photoFile) {
             if (photoFile.webContentLink != null) {
                 try {
                     Glide.with(context)
