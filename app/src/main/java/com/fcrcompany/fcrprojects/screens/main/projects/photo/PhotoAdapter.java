@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         private static final String MIME_TYPE_JPG = "image/jpeg";
 
         @BindView(R.id.photo)
-        ImageView photo;
+        ImageView photoView;
         @BindView(R.id.folder_with_name)
         TextView textView;
         @BindView(R.id.layout)
@@ -95,16 +94,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         private void setPhoto(ProjectFile photoFile) {
 
             if (photoFile.webContentLink != null) {
-                try {
-                    Glide.with(context)
-                            .load(photoFile.webContentLink)
-                            .apply(new RequestOptions()
-                                    .centerCrop()
-                                    .override(photoSize, photoSize))
-                            .into(this.photo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                Picasso.get()
+                        .load(photoFile.webContentLink)
+                        .resize(photoSize, photoSize)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_photo)
+                        .into(photoView);
             }
         }
     }
