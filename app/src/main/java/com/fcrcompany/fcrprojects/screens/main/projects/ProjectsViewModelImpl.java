@@ -43,7 +43,7 @@ public class ProjectsViewModelImpl extends ProjectsViewModel {
         String token = prefs.getToken();
         String folderId = getFolderId(type);
         String orderBy = "folder, name";
-        String query = "'" + folderId + "' in parents";
+        String query = "'" + folderId + "' in parents and trashed = false";
 
         Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY, query)
                 .subscribeOn(Schedulers.io())
