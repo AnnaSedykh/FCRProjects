@@ -15,7 +15,7 @@
         android:id="@+id/folder_with_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_photo"
+        android:drawableTop="@drawable/ic_mime_folder"
         android:textAlignment="center"
         android:visibility="gone"
         android:layout_gravity="center"/>

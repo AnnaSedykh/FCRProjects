@@ -81,12 +81,11 @@ public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapte
             //Set image icon and click listener according to file mime type
             switch (projectFile.mimeType) {
                 case MIME_TYPE_FOLDER:
+                    image.setImageResource(R.drawable.ic_mime_folder);
                     String nameLowCase = projectFile.name.toLowerCase();
                     if (nameLowCase.contains(ProjectFile.PHOTO_RU) || nameLowCase.contains(ProjectFile.PHOTO_EN)) {
-                        image.setImageResource(R.drawable.ic_photo);
                         itemView.setOnClickListener(v -> PhotoActivity.start(context, projectFile));
                     } else {
-                        image.setImageResource(R.drawable.ic_mime_folder);
                         itemView.setOnClickListener(v -> FilesActivity.start(context, projectFile));
                     }
                     break;
