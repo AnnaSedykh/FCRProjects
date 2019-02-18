@@ -1,4 +1,4 @@
-package com.fcrcompany.fcrprojects.screens.main.projects.files;
+package com.fcrcompany.fcrprojects.screens.main.projects;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class FilesViewModelImpl extends FilesViewModel {
+public class ProjectFilesViewModelImpl extends ProjectFilesViewModel {
 
     private MutableLiveData<List<ProjectFile>> projectFiles = new MutableLiveData<>();
 
@@ -24,7 +24,7 @@ public class FilesViewModelImpl extends FilesViewModel {
     private Api api;
     private Prefs prefs;
 
-    public FilesViewModelImpl(@NonNull Application application) {
+    public ProjectFilesViewModelImpl(@NonNull Application application) {
         super(application);
 
         App app = (App) application;
@@ -38,13 +38,13 @@ public class FilesViewModelImpl extends FilesViewModel {
     }
 
     @Override
-    public void getProjectFiles(String parentId) {
+    public void getProjectFiles(String folderId) {
 
         String token = prefs.getToken();
         String orderBy = "folder, name";
-        String query = "'" + parentId + "' in parents and trashed = false";
+        String query = "'" + folderId + "' in parents and trashed = false";
 
-        Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY,query)
+        Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY, query)
                 .subscribeOn(Schedulers.io())
                 .subscribe(driveResponse -> {
                     List<ProjectFile> data = driveResponse.files;

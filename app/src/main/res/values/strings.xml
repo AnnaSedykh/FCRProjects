@@ -16,9 +16,15 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="failed_to_open_project">Failed to open project folder</string>
+    <string name="failed_to_open_file">Failed to open file</string>
+    <string name="permission_storage_denied">No access to storage</string>
+    <string name="open_file_chooser_title">Open file</string>
+    <string name="no_app_to_view_file">Install app \nto view %s files</string>
+    <string name="failed_to_download_file">Failed to download file %s</string>
 
     <string name="tab_current">Current</string>
     <string name="tab_archive">Archive</string>
+    <string name="loading_file">Loading file…</string>
 
     <string-array name="tab_titles">
         <item>@string/tab_current</item>

@@ -34,6 +34,9 @@ public class ProjectFile implements Parcelable {
         id = in.readString();
         name = in.readString();
         mimeType = in.readString();
+        webContentLink = in.readString();
+        webViewLink = in.readString();
+        viewedByMe = in.readByte() != 0;
     }
 
     public static final Creator<ProjectFile> CREATOR = new Creator<ProjectFile>() {
@@ -58,5 +61,8 @@ public class ProjectFile implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(mimeType);
+        dest.writeString(webContentLink);
+        dest.writeString(webViewLink);
+        dest.writeByte((byte) (viewedByMe ? 1 : 0));
     }
 }
