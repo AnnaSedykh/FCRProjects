@@ -42,7 +42,8 @@ class PhotoViewModelImpl extends PhotoViewModel {
         String token = prefs.getToken();
         String orderBy = "folder, createdTime desc";
         String query = "'" + parentId + "' in parents " +
-                "and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'image/jpeg')";
+                "and ((mimeType = 'application/vnd.google-apps.folder' or mimeType = 'image/jpeg') " +
+                "and trashed = false)";
 
         Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY, query)
                 .subscribeOn(Schedulers.io())

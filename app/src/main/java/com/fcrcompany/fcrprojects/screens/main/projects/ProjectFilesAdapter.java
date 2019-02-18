@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
+import com.fcrcompany.fcrprojects.screens.main.projects.document.DocumentActivity;
 import com.fcrcompany.fcrprojects.screens.main.projects.files.FilesActivity;
 import com.fcrcompany.fcrprojects.screens.main.projects.photo.PhotoActivity;
 
@@ -50,7 +51,6 @@ public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapte
     }
 
     static class ProjectViewHolder extends RecyclerView.ViewHolder {
-        private static final String OPEN_URL = "https://drive.google.com/open?id=";
         private static final String MIME_TYPE_FOLDER = "application/vnd.google-apps.folder";
         private static final String MIME_TYPE_JPG = "image/jpeg";
         private static final String MIME_TYPE_PDF = "application/pdf";
@@ -81,28 +81,27 @@ public class ProjectFilesAdapter extends RecyclerView.Adapter<ProjectFilesAdapte
             //Set image icon and click listener according to file mime type
             switch (projectFile.mimeType) {
                 case MIME_TYPE_FOLDER:
+                    image.setImageResource(R.drawable.ic_mime_folder);
                     String nameLowCase = projectFile.name.toLowerCase();
                     if (nameLowCase.contains(ProjectFile.PHOTO_RU) || nameLowCase.contains(ProjectFile.PHOTO_EN)) {
-                        image.setImageResource(R.drawable.ic_photo);
                         itemView.setOnClickListener(v -> PhotoActivity.start(context, projectFile));
                     } else {
-                        image.setImageResource(R.drawable.ic_mime_folder);
                         itemView.setOnClickListener(v -> FilesActivity.start(context, projectFile));
                     }
                     break;
                 case MIME_TYPE_JPG:
                     image.setImageResource(R.drawable.ic_mime_image);
+                    //TODO
 //                    startViewInBrowserOnClick(projectFile);
                     break;
                 case MIME_TYPE_PDF:
                     image.setImageResource(R.drawable.ic_mime_pdf);
-//                    startViewInBrowserOnClick(projectFile);
+                    itemView.setOnClickListener(v -> DocumentActivity.start(context, projectFile));
                     break;
                 default:
                     image.setImageResource(R.drawable.ic_mime_other);
-//                    startViewInBrowserOnClick(projectFile);
+                    itemView.setOnClickListener(v -> DocumentActivity.start(context, projectFile));
             }
         }
-
     }
 }

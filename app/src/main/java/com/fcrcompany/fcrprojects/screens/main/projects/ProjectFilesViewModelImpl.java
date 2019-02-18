@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ProjectsViewModelImpl extends ProjectsViewModel {
+public class ProjectFilesViewModelImpl extends ProjectFilesViewModel {
 
     private MutableLiveData<List<ProjectFile>> projectFiles = new MutableLiveData<>();
 
@@ -24,7 +24,7 @@ public class ProjectsViewModelImpl extends ProjectsViewModel {
     private Api api;
     private Prefs prefs;
 
-    public ProjectsViewModelImpl(@NonNull Application application) {
+    public ProjectFilesViewModelImpl(@NonNull Application application) {
         super(application);
 
         App app = (App) application;
@@ -38,12 +38,11 @@ public class ProjectsViewModelImpl extends ProjectsViewModel {
     }
 
     @Override
-    public void getProjectFiles(String type) {
+    public void getProjectFiles(String folderId) {
 
         String token = prefs.getToken();
-        String folderId = getFolderId(type);
         String orderBy = "folder, name";
-        String query = "'" + folderId + "' in parents";
+        String query = "'" + folderId + "' in parents and trashed = false";
 
         Disposable disposable = api.files("Bearer " + token, orderBy, ProjectFile.FIELDS_QUERY, query)
                 .subscribeOn(Schedulers.io())
@@ -57,17 +56,5 @@ public class ProjectsViewModelImpl extends ProjectsViewModel {
                 });
 
         disposables.add(disposable);
-    }
-
-    private String getFolderId(String type) {
-        String folderId = "";
-        switch (type){
-            case ProjectFile.TYPE_CURRENT:
-                folderId = ProjectFile.CURRENT_FOLDER_ID;
-                break;
-            case ProjectFile.TYPE_ARCHIVE:
-                folderId = ProjectFile.ARCHIVE_FOLDER_ID;
-        }
-        return folderId;
     }
 }

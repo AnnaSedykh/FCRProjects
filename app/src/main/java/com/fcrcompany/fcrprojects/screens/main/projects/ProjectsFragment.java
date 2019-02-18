@@ -28,7 +28,7 @@ public class ProjectsFragment extends Fragment {
     private ProjectFilesAdapter projectAdapter;
     private String type;
     private Unbinder unbinder;
-    private ProjectsViewModel viewModel;
+    private ProjectFilesViewModel viewModel;
 
     @BindView(R.id.progress)
     ProgressBar progressBar;
@@ -54,7 +54,7 @@ public class ProjectsFragment extends Fragment {
                 throw new IllegalArgumentException("Unknown type");
             }
         }
-        viewModel = ViewModelProviders.of(this).get(ProjectsViewModelImpl.class);
+        viewModel = ViewModelProviders.of(this).get(ProjectFilesViewModelImpl.class);
         projectAdapter = new ProjectFilesAdapter();
     }
 
@@ -72,7 +72,7 @@ public class ProjectsFragment extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         recycler.setAdapter(projectAdapter);
 
-        viewModel.getProjectFiles(type);
+        viewModel.getProjectFiles(getFolderId(type));
         initInputs();
     }
 
@@ -84,6 +84,18 @@ public class ProjectsFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }
         );
+    }
+
+    private String getFolderId(String type) {
+        String folderId = "";
+        switch (type){
+            case ProjectFile.TYPE_CURRENT:
+                folderId = ProjectFile.CURRENT_FOLDER_ID;
+                break;
+            case ProjectFile.TYPE_ARCHIVE:
+                folderId = ProjectFile.ARCHIVE_FOLDER_ID;
+        }
+        return folderId;
     }
 
     @Override

@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
 import com.fcrcompany.fcrprojects.screens.main.projects.ProjectFilesAdapter;
+import com.fcrcompany.fcrprojects.screens.main.projects.ProjectFilesViewModel;
+import com.fcrcompany.fcrprojects.screens.main.projects.ProjectFilesViewModelImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +41,7 @@ public class FilesActivity extends AppCompatActivity {
 
     private ProjectFile project;
     private ProjectFilesAdapter filesAdapter;
-    private FilesViewModel viewModel;
+    private ProjectFilesViewModel viewModel;
 
 
     @Override
@@ -52,7 +54,7 @@ public class FilesActivity extends AppCompatActivity {
         if (project != null) {
 
             setupToolbar();
-            viewModel = ViewModelProviders.of(this).get(FilesViewModelImpl.class);
+            viewModel = ViewModelProviders.of(this).get(ProjectFilesViewModelImpl.class);
             filesAdapter = new ProjectFilesAdapter();
             recycler.setLayoutManager(new LinearLayoutManager(this));
             recycler.setAdapter(filesAdapter);

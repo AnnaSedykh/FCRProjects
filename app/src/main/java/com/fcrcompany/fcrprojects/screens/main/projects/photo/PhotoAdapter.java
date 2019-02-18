@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.fcrcompany.fcrprojects.R;
 import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +54,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         private static final String MIME_TYPE_JPG = "image/jpeg";
 
         @BindView(R.id.photo)
-        ImageView photo;
+        ImageView photoView;
         @BindView(R.id.folder_with_name)
         TextView textView;
+        @BindView(R.id.layout)
+        ViewGroup layout;
 
         private Context context;
         private int photoSize;
@@ -66,40 +67,40 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = itemView.getContext();
+            setViewSize();
+        }
+
+        private void setViewSize() {
             int width = context.getResources().getDisplayMetrics().widthPixels;
             photoSize = width / ProjectFile.COLUMN_NUMBER;
+            layout.setMinimumHeight(photoSize);
+            layout.setMinimumWidth(photoSize);
         }
 
         void bind(final ProjectFile photoFile) {
+
             switch (photoFile.mimeType) {
                 case MIME_TYPE_FOLDER:
-                    setupTextView(photoFile);
+                    textView.setText(photoFile.name);
+                    textView.setVisibility(View.VISIBLE);
                     itemView.setOnClickListener(v -> PhotoActivity.start(context, photoFile));
                     break;
 
                 case MIME_TYPE_JPG:
-                    setupPhotoView(photoFile);
+                    setPhoto(photoFile);
             }
         }
 
-        private void setupTextView(ProjectFile photoFile) {
-            textView.setVisibility(View.VISIBLE);
-            textView.setMinimumWidth(photoSize);
-            textView.setText(photoFile.name);
-        }
+        private void setPhoto(ProjectFile photoFile) {
 
-        private void setupPhotoView(ProjectFile photoFile) {
             if (photoFile.webContentLink != null) {
-                try {
-                    Glide.with(context)
-                            .load(photoFile.webContentLink)
-                            .apply(new RequestOptions()
-                                    .centerCrop()
-                                    .override(photoSize, photoSize))
-                            .into(this.photo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                Picasso.get()
+                        .load(photoFile.webContentLink)
+                        .resize(photoSize, photoSize)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_photo)
+                        .into(photoView);
             }
         }
     }

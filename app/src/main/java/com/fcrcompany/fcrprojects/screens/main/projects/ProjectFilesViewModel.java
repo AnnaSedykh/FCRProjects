@@ -1,4 +1,4 @@
-package com.fcrcompany.fcrprojects.screens.main.projects.files;
+package com.fcrcompany.fcrprojects.screens.main.projects;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -9,13 +9,13 @@ import com.fcrcompany.fcrprojects.data.api.model.ProjectFile;
 
 import java.util.List;
 
-public abstract class FilesViewModel extends AndroidViewModel {
+public abstract class ProjectFilesViewModel extends AndroidViewModel {
 
-    public FilesViewModel(@NonNull Application application) {
+    public ProjectFilesViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public abstract void getProjectFiles(String parentId);
+    public abstract void getProjectFiles(String folderId);
 
     public abstract LiveData<List<ProjectFile>> projectFiles();
 }

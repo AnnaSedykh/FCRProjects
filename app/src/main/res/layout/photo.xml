@@ -2,24 +2,31 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp">
 
-    <ImageView
-        android:id="@+id/photo"
+    <FrameLayout
+        android:id="@+id/layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        tools:ignore="ContentDescription" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/folder_with_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_photo"
-        android:textAlignment="center"
-        android:visibility="gone"
-        android:layout_gravity="center"/>
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/folder_with_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_mime_folder"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 </android.support.v7.widget.CardView>
 
 
